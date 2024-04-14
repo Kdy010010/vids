@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>산타가 태양까지 가는 시간 시각화</title>
+<style>
+  #santa-sun-container {
+    width: 400px;
+    height: 200px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .celestial-body {
+    position: absolute;
+    bottom: 0;
+    transition: all 0.5s ease-in-out;
+  }
+  #santa {
+    width: 100px;
+  }
+  #sun {
+    width: 150px;
+    right: 0;
+  }
+  #explosion {
+    width: 200px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: none;
+  }
+  .explosion-part {
+    position: absolute;
+    background-color: yellow;
+    border-radius: 50%;
+    animation: explode 0.5s ease-out forwards;
+  }
+  @keyframes explode {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      width: 200px;
+      height: 200px;
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+<h1>산타가 태양까지 가는 시간 시각화</h1>
+<div id="santa-sun-container">
+  <img id="santa" class="celestial-body" src="santa.jpg" alt="Santa">
+  <img id="sun" class="celestial-body" src="sun.jpg" alt="Sun">
+  <img id="explosion" src="explosion.png" alt="Explosion">
+</div>
+<label for="speed">속도 (km/h):</label>
+<input type="number" id="speed" min="1" value="2200">
+<button onclick="calculateTime()">시간 계산</button>
+<div id="result"></div>
+
+<script>
+function calculateTime() {
+  const speedKmPerHour = document.getElementById("speed").value;
+  const speedKmPerSecond = speedKmPerHour / 3600;
+  const oneYearInSeconds = 365 * 24 * 60 * 60;
+  const timeToSunInSeconds = oneYearInSeconds / speedKmPerSecond;
+  const yearsPassed = timeToSunInSeconds / oneYearInSeconds;
+
+  const resultElement = document.getElementById("result");
+  resultElement.innerHTML = `산타가 태양까지 가는데 걸리는 시간은 약 ${timeToSunInSeconds.toLocaleString()}초 이며, 이 동안 약 ${yearsPassed.toFixed(2)}년이 지났습니다.`;
+
+  // 산타와 태양의 위치 설정
+  const santa = document.getElementById("santa");
+  const sun = document.getElementById("sun");
+  santa.style.left = "0";
+  sun.style.left = "calc(100% - 150px)";
+
+  // 부딪혔을 때 폭발 효과
+  const explosion = document.getElementById("explosion");
+  explosion.style.display = "block";
+  setTimeout(() => {
+    explosion.style.display = "none";
+  }, 500);
+}
+</script>
+
+</body>
+</html>
